@@ -426,6 +426,14 @@ button {
   }
 }
 
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Glass morphism */
 @utility glass {
   background: var(--color-surface-glass);
