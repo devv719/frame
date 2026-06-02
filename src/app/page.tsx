@@ -1,65 +1,133 @@
-import Image from "next/image";
+"use client";
 
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer, staggerItem } from "@/lib/motion";
+
+/**
+ * Home page — Foundation placeholder.
+ * Demonstrates the design system tokens, typography scale,
+ * and animation presets in action.
+ */
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainer}
+      className="min-h-[calc(100dvh-4rem)]"
+    >
+      {/* Hero Section */}
+      <section className="container-frame section-padding flex flex-col items-center justify-center text-center">
+        <motion.div variants={staggerItem}>
+          <span className="text-overline-style inline-block mb-6">
+            Cinematic Discovery
+          </span>
+        </motion.div>
+
+        <motion.h1
+          variants={staggerItem}
+          className="max-w-3xl"
+        >
+          Cinema through a{" "}
+          <span className="gradient-text">new lens</span>
+        </motion.h1>
+
+        <motion.p
+          variants={staggerItem}
+          className="mt-6 max-w-xl text-body-lg text-text-secondary leading-relaxed"
+        >
+          Discover films through visual storytelling, curated collections,
+          and the places where they were made.
+        </motion.p>
+
+        <motion.div
+          variants={staggerItem}
+          className="mt-10 flex flex-col sm:flex-row items-center gap-4"
+        >
+          <button
+            type="button"
+            className="px-8 py-3.5 rounded-2xl text-[0.9375rem] font-medium text-white gradient-lavender hover:shadow-glow-lavender transition-shadow duration-[400ms] active:scale-[0.97] transform"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Start exploring
+          </button>
+          <button
+            type="button"
+            className="px-8 py-3.5 rounded-2xl text-[0.9375rem] font-medium text-text-secondary border border-border-primary hover:border-lavender-300 hover:text-text-primary transition-all duration-[250ms]"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            Watch trailer
+          </button>
+        </motion.div>
+      </section>
+
+      {/* Design System Preview */}
+      <section className="container-frame section-padding">
+        <motion.div
+          variants={fadeUp}
+          className="card-surface p-8 md:p-12"
+        >
+          <h6 className="mb-8">Design System Active</h6>
+
+          {/* Color Swatches */}
+          <div className="mb-10">
+            <p className="text-caption-style mb-4">Color Palette</p>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { name: "Lavender 50", cls: "bg-lavender-50" },
+                { name: "Lavender 100", cls: "bg-lavender-100" },
+                { name: "Lavender 200", cls: "bg-lavender-200" },
+                { name: "Lavender 300", cls: "bg-lavender-300" },
+                { name: "Lavender 400", cls: "bg-lavender-400" },
+                { name: "Lavender 500", cls: "bg-lavender-500" },
+                { name: "Lavender 600", cls: "bg-lavender-600" },
+                { name: "Pink 200", cls: "bg-pink-200" },
+                { name: "Pink 400", cls: "bg-pink-400" },
+                { name: "Warm 100", cls: "bg-warm-100" },
+              ].map((swatch) => (
+                <div key={swatch.name} className="flex flex-col items-center gap-2">
+                  <div
+                    className={`w-12 h-12 rounded-xl ${swatch.cls} shadow-xs border border-white/40`}
+                    title={swatch.name}
+                  />
+                  <span className="text-[0.625rem] text-text-muted">
+                    {swatch.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Typography */}
+          <div className="mb-10">
+            <p className="text-caption-style mb-4">Typography Scale</p>
+            <div className="space-y-3">
+              <h1 className="text-display-2xl">Display 2XL</h1>
+              <h2>Heading H2</h2>
+              <h3>Heading H3</h3>
+              <h4>Heading H4</h4>
+              <p className="text-body-lg">Body large — The quick brown fox jumps over the lazy dog.</p>
+              <p>Body medium — Film is a powerful medium for visual storytelling.</p>
+              <small>Small caption text for metadata and labels.</small>
+            </div>
+          </div>
+
+          {/* Spacing & Components */}
+          <div>
+            <p className="text-caption-style mb-4">Interactive Elements</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="px-6 py-3 rounded-xl gradient-lavender text-white text-[0.875rem] font-medium hover-glow cursor-pointer">
+                Primary Action
+              </div>
+              <div className="px-6 py-3 rounded-xl border border-border-primary text-text-secondary text-[0.875rem] font-medium hover:border-lavender-300 transition-base cursor-pointer">
+                Secondary
+              </div>
+              <div className="px-6 py-3 rounded-xl glass text-text-secondary text-[0.875rem] font-medium cursor-pointer">
+                Glass
+              </div>
+              <div className="w-48 h-10 rounded-xl shimmer" />
+            </div>
+          </div>
+        </motion.div>
+      </section>
+    </motion.div>
   );
 }
