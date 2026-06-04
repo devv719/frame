@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { TRENDING_MOVIES, HERO_STATS } from "@/lib/data/mock";
 import { cn } from "@/lib/utils";
+import { type Movie } from "@/components/ui/movie-card";
 
 /**
  * HeroSection — Full-viewport cinematic introduction.
@@ -29,8 +30,28 @@ export function HeroSection() {
   const floatY3 = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  // Select 3 posters for floating cards
-  const floatingPosters = TRENDING_MOVIES.slice(0, 3);
+  // Load live TMDB posters client-side with mock fallback
+  const [posters, setPosters] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const loadPosters = async () => {
+      try {
+        const res = await fetch("/api/movies?type=trending&limit=3");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length >= 3) {
+            setPosters(data);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load hero background posters from TMDB", err);
+      }
+    };
+    loadPosters();
+  }, []);
+
+  // Select 3 posters for floating cards (use live TMDB data if loaded, otherwise mock data)
+  const floatingPosters = posters.length >= 3 ? posters : (TRENDING_MOVIES.slice(0, 3) as any[] as Movie[]);
 
   return (
     <section
