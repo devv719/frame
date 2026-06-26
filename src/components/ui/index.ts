@@ -59,3 +59,16 @@ export {
   type MapArcProps,
   type MapClusterLayerProps,
 } from "./mapcn-map-arc";
+
+// Visual Effects Components
+export { ShaderBackground } from "./shader-background";
+export { FilmGrain } from "./film-grain";
+export { CursorGlow } from "./cursor-glow";
+
+// Log Components
+export { LogModal } from "./log-modal";
+
+// Mood Components
+export { MoodProfile } from "./mood-profile";
+
+

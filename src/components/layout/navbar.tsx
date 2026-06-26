@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { fadeDown, fadeUp, staggerContainer, staggerItem } from "@/lib/motion";
+import { LogModal } from "@/components/ui";
 
 /**
  * Navbar — Primary site navigation.
@@ -19,6 +21,8 @@ import { fadeDown, fadeUp, staggerContainer, staggerItem } from "@/lib/motion";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLogOpen, setIsLogOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,11 +50,10 @@ export function Navbar() {
       animate="visible"
       variants={fadeDown}
       className={cn(
-        "fixed top-0 left-0 right-0 z-[200]",
-        "transition-all duration-[400ms]",
+        "fixed top-0 left-0 right-0 z-[200] border-b transition-colors duration-[300ms]",
         scrolled
-          ? "glass-heavy shadow-sm"
-          : "bg-transparent"
+          ? "bg-[#0e0d0b]/95 backdrop-blur-md border-[#292524]/60"
+          : "bg-[#0e0d0b] border-transparent"
       )}
     >
       <nav
@@ -61,91 +64,50 @@ export function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 group"
+          className="flex items-center gap-2 group select-none"
           aria-label={`${SITE_CONFIG.name} — home`}
         >
-          <span className="relative flex items-center justify-center w-8 h-8 rounded-lg gradient-lavender">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-white"
-              aria-hidden="true"
-            >
-              <path
-                d="M2 4C2 2.89543 2.89543 2 4 2H12C13.1046 2 14 2.89543 14 4V12C14 13.1046 13.1046 14 12 14H4C2.89543 14 2 13.1046 2 12V4Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-              <circle cx="5.5" cy="5.5" r="1" fill="currentColor" />
-              <path
-                d="M6 10L8 7.5L10.5 10.5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="text-heading text-[1.125rem] tracking-tight text-text-primary group-hover:text-lavender-600 transition-colors duration-[250ms]">
-            {SITE_CONFIG.name}
+          <span className="font-display italic text-[1.5rem] font-normal tracking-tight text-[#e8d5b0]">
+            frame
           </span>
         </Link>
-
+ 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={cn(
-                  "relative px-4 py-2 rounded-lg",
-                  "text-[0.875rem] font-medium tracking-normal",
-                  "text-text-secondary",
-                  "hover:text-text-primary hover:bg-neutral-100/60",
-                  "transition-all duration-[250ms]"
-                )}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+        <ul className="hidden md:flex items-center gap-7">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href || pathname?.startsWith(link.href + "/");
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={cn(
+                    "text-[12px] font-sans font-medium tracking-[0.18em] uppercase transition-colors duration-[200ms]",
+                    isActive
+                      ? "text-[#e8d5b0]"
+                      : "text-[#e8e2d9]/60 hover:text-[#e8d5b0]"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
+          {/* Add Log a Watch directly in nav links */}
+          <li>
+            <button
+              type="button"
+              onClick={() => setIsLogOpen(true)}
+              className="text-[12px] font-sans font-medium tracking-[0.18em] uppercase text-[#e8d5b0] hover:text-[#d6c096] transition-colors duration-[200ms]"
+            >
+              Log a Watch
+            </button>
+          </li>
         </ul>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="/sign-in"
-            className={cn(
-              "px-4 py-2 rounded-lg",
-              "text-[0.875rem] font-medium",
-              "text-text-secondary hover:text-text-primary",
-              "transition-colors duration-[250ms]"
-            )}
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/get-started"
-            className={cn(
-              "px-5 py-2.5 rounded-xl",
-              "text-[0.875rem] font-medium text-white",
-              "gradient-lavender",
-              "hover:shadow-glow-lavender",
-              "transition-shadow duration-[400ms]",
-              "active:scale-[0.97] transform"
-            )}
-          >
-            Get started
-          </Link>
-        </div>
 
         {/* Mobile Menu Button */}
         <button
           type="button"
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-neutral-100/60 transition-colors"
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-none hover:bg-white/5 transition-colors text-[#e8e2d9]"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
@@ -154,19 +116,19 @@ export function Navbar() {
           <div className="relative w-5 h-4 flex flex-col justify-between">
             <span
               className={cn(
-                "block w-full h-[1.5px] bg-text-primary rounded-full transition-all duration-300 origin-center",
+                "block w-full h-[1.5px] bg-current transition-all duration-300 origin-center",
                 mobileMenuOpen && "rotate-45 translate-y-[5px]"
               )}
             />
             <span
               className={cn(
-                "block w-full h-[1.5px] bg-text-primary rounded-full transition-all duration-200",
+                "block w-full h-[1.5px] bg-current transition-all duration-200",
                 mobileMenuOpen && "opacity-0 scale-x-0"
               )}
             />
             <span
               className={cn(
-                "block w-full h-[1.5px] bg-text-primary rounded-full transition-all duration-300 origin-center",
+                "block w-full h-[1.5px] bg-current transition-all duration-300 origin-center",
                 mobileMenuOpen && "-rotate-45 -translate-y-[5px]"
               )}
             />
@@ -186,62 +148,59 @@ export function Navbar() {
             className={cn(
               "md:hidden",
               "absolute top-full left-0 right-0",
-              "glass-heavy border-t border-border-secondary",
+              "bg-[#0e0d0b] border-t border-[#292524]",
               "px-6 py-6"
             )}
           >
-            <ul className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <motion.li key={link.href} variants={staggerItem}>
-                  <Link
-                    href={link.href}
-                    className={cn(
-                      "block px-4 py-3 rounded-xl",
-                      "text-[1rem] font-medium",
-                      "text-text-secondary hover:text-text-primary",
-                      "hover:bg-neutral-100/60",
-                      "transition-all duration-[250ms]"
-                    )}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.li>
-              ))}
+            <ul className="flex flex-col gap-1.5">
+              {NAV_LINKS.map((link) => {
+                const isActive = pathname === link.href || pathname?.startsWith(link.href + "/");
+                return (
+                  <motion.li key={link.href} variants={staggerItem}>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "block px-4 py-3 text-[12px] font-sans font-medium tracking-[0.18em] uppercase transition-colors",
+                        isActive
+                          ? "text-[#e8d5b0]"
+                          : "text-[#e8e2d9]/60 hover:text-[#e8d5b0]"
+                      )}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.li>
+                );
+              })}
             </ul>
             <motion.div
               variants={fadeUp}
-              className="mt-4 pt-4 border-t border-border-secondary flex flex-col gap-2"
+              className="mt-4 pt-4 border-t border-[#292524] flex flex-col gap-2 animate-none"
             >
-              <Link
-                href="/sign-in"
-                className={cn(
-                  "block text-center px-4 py-3 rounded-xl",
-                  "text-[0.9375rem] font-medium",
-                  "text-text-secondary hover:text-text-primary",
-                  "hover:bg-neutral-100/60",
-                  "transition-all duration-[250ms]"
-                )}
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsLogOpen(true);
+                }}
+                className="block text-center w-full py-3 text-[12px] font-sans font-medium tracking-[0.18em] uppercase text-[#e8d5b0] hover:text-[#d6c096] transition-colors cursor-pointer"
               >
-                Sign in
-              </Link>
-              <Link
-                href="/get-started"
-                className={cn(
-                  "block text-center px-5 py-3 rounded-xl",
-                  "text-[0.9375rem] font-medium text-white",
-                  "gradient-lavender",
-                  "transition-shadow duration-[400ms]"
-                )}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Get started
-              </Link>
+                Log a Watch
+              </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <LogModal
+        isOpen={isLogOpen}
+        onClose={() => setIsLogOpen(false)}
+        onSuccess={() => {
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("cinema-log-updated"));
+          }
+        }}
+      />
     </motion.header>
   );
 }

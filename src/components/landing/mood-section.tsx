@@ -1,160 +1,95 @@
 "use client";
-
+ 
 import { motion } from "framer-motion";
-import { MOODS } from "@/lib/data/mock";
-import { cn } from "@/lib/utils";
-
-/**
- * MoodSection — Explore films by emotional tone.
- *
- * Features:
- * - Bento-style asymmetric grid
- * - Each mood has a unique gradient backdrop
- * - Hover state intensifies gradient + scale
- * - Film count badges
- * - Staggered scroll reveal
- */
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { MOOD_DEFINITIONS } from "@/services/curated-collections";
+ 
 export function MoodSection() {
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+ 
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const res = await fetch("/api/movies?type=mood-counts");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            const countMap: Record<string, number> = {};
+            data.forEach((item: { id: string; count: number }) => {
+              countMap[item.id] = item.count;
+            });
+            setCounts(countMap);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch mood counts", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCounts();
+  }, []);
+ 
   return (
     <section
-      className="relative section-padding overflow-hidden"
+      className="relative section-padding overflow-hidden bg-[#0e0d0b]"
       aria-label="Explore by mood"
     >
-      {/* Background accent */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 30% 50%, var(--color-lavender-400), transparent 50%), radial-gradient(circle at 70% 80%, var(--color-pink-300), transparent 40%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div className="container-frame relative">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-14 md:mb-20"
-        >
-          <span className="text-overline-style block mb-3">
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <span className="text-overline-style block mb-3 text-[rgba(232,226,217,0.4)]">
             Mood Discovery
           </span>
-          <h2 className="max-w-lg mx-auto">
-            How do you want to{" "}
-            <span className="gradient-text">feel</span> tonight?
+          <h2 className="font-display italic font-normal text-[2.25rem] sm:text-[3rem] text-[#e8e2d9] tracking-tight leading-tight mb-4">
+            How do you want to feel tonight?
           </h2>
-          <p className="mt-4 max-w-md mx-auto text-text-secondary">
-            Every emotion has a film. Let your mood guide the journey.
+          <p className="mt-4 font-sans text-xs md:text-sm tracking-wider uppercase text-[rgba(232,226,217,0.4)]">
+            Every emotion has a film. Let your mood guide the archive.
           </p>
-        </motion.div>
-
-        {/* Bento Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-          {MOODS.map((mood, index) => (
-            <MoodCard
-              key={mood.id}
-              mood={mood}
-              index={index}
-              isLarge={index === 0 || index === 5}
-            />
-          ))}
+        </div>
+ 
+        {/* Grid of Flat Dark Rectangular Tiles */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {MOOD_DEFINITIONS.map((mood, index) => {
+            const filmCount = counts[mood.id] || 350;
+            return (
+              <motion.div
+                key={mood.id}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.05,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <Link href={`/discover?mood=${mood.id}`} className="block h-full">
+                  <div className="group flex flex-col justify-between p-6 bg-[#161410] border border-white/5 rounded-none text-left transition-all duration-300 hover:border-[#e8d5b0]/25 hover:bg-[#1e1c18] min-h-[160px] cursor-pointer">
+                    <div>
+                      {/* Film count in small uppercase tracking */}
+                      <span className="text-[0.6875rem] font-sans font-normal text-[rgba(232,226,217,0.4)] tracking-[0.2em] uppercase block mb-3">
+                        {loading ? "Counting..." : `${filmCount} FILMS`}
+                      </span>
+                      {/* Mood name in Playfair italic */}
+                      <h3 className="font-display italic font-normal text-[1.5rem] md:text-[1.75rem] text-[#e8d5b0] leading-none mb-2">
+                        {mood.name}
+                      </h3>
+                    </div>
+                    {/* Descriptor */}
+                    <p className="text-[0.8125rem] font-sans font-light text-[rgba(232,226,217,0.4)] group-hover:text-[rgba(232,226,217,0.6)] transition-colors">
+                      {mood.description}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
-  );
-}
-
-function MoodCard({
-  mood,
-  index,
-  isLarge,
-}: {
-  mood: (typeof MOODS)[number];
-  index: number;
-  isLarge: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.97 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.08,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={cn(
-        isLarge && "md:col-span-2 md:row-span-1"
-      )}
-    >
-      <div
-        className={cn(
-          "group relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer",
-          "transition-all duration-500",
-          "hover:shadow-xl hover:-translate-y-1",
-          isLarge ? "h-[200px] md:h-[260px]" : "h-[200px] md:h-[260px]"
-        )}
-        style={{ background: mood.gradient }}
-      >
-        {/* Noise texture overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.08] mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-          aria-hidden="true"
-        />
-
-        {/* Hover glow */}
-        <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-500" />
-
-        {/* Content */}
-        <div className="relative h-full flex flex-col justify-between p-6 md:p-8">
-          <div className="flex items-start justify-between">
-            <span className="text-[2rem] md:text-[2.5rem] filter drop-shadow-sm">
-              {mood.emoji}
-            </span>
-            <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-[0.6875rem] font-medium text-white/90 tracking-wide">
-              {mood.filmCount} films
-            </span>
-          </div>
-
-          <div>
-            <h3
-              className={cn(
-                "font-display font-semibold text-white tracking-tight",
-                isLarge
-                  ? "text-[1.75rem] md:text-[2rem]"
-                  : "text-[1.375rem] md:text-[1.5rem]"
-              )}
-            >
-              {mood.name}
-            </h3>
-            <p className="mt-1 text-[0.8125rem] text-white/70 leading-relaxed">
-              {mood.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Arrow on hover */}
-        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-400">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
-    </motion.div>
   );
 }

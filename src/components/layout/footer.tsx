@@ -26,15 +26,10 @@ export function Footer() {
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
       variants={staggerContainer}
-      className="relative mt-auto border-t border-border-secondary bg-bg-secondary"
+      className="relative mt-auto border-t border-white/5 bg-[#0e0d0b]"
     >
-      {/* Subtle top gradient line */}
       <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, var(--color-lavender-300), var(--color-pink-300), transparent)",
-        }}
+        className="absolute top-0 left-0 right-0 h-px bg-[#292524]"
         aria-hidden="true"
       />
 
@@ -47,14 +42,14 @@ export function Footer() {
             className="col-span-2 md:col-span-4 lg:col-span-2"
           >
             <Link href="/" className="inline-flex items-center gap-2 group">
-              <span className="relative flex items-center justify-center w-7 h-7 rounded-md gradient-lavender">
+              <span className="relative flex items-center justify-center w-7 h-7 rounded-md bg-[#161410] border border-[#e8d5b0]/20 text-[#e8d5b0]">
                 <svg
                   width="14"
                   height="14"
                   viewBox="0 0 16 16"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="text-white"
+                  className="currentColor"
                   aria-hidden="true"
                 >
                   <path
@@ -72,14 +67,14 @@ export function Footer() {
                   />
                 </svg>
               </span>
-              <span className="text-heading text-[1rem] text-text-primary">
+              <span className="text-heading text-[1.1rem] text-[#e8d5b0] font-display italic font-normal">
                 {SITE_CONFIG.name}
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-body-sm text-text-tertiary leading-relaxed">
               {SITE_CONFIG.description}
             </p>
-
+ 
             {/* Social links */}
             <div className="flex items-center gap-3 mt-6">
               {SOCIAL_LINKS.map((social) => (
@@ -90,8 +85,8 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className={cn(
                     "flex items-center justify-center w-9 h-9 rounded-lg",
-                    "bg-neutral-100 text-text-tertiary",
-                    "hover:bg-lavender-100 hover:text-lavender-600",
+                    "bg-[#161410] border border-white/5 text-text-secondary",
+                    "hover:border-[#e8d5b0]/30 hover:text-[#e8d5b0]",
                     "transition-all duration-[250ms]"
                   )}
                   aria-label={`Follow us on ${social.label}`}

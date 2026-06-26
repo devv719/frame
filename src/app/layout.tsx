@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
-import { Navbar, Footer } from "@/components";
+import { AppChrome } from "@/components/layout/app-chrome";
 import "./globals.css";
 
 /* ── Font Configuration ── */
@@ -12,9 +12,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -82,12 +83,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${outfit.variable} ${geistMono.variable}`}
+      className={`${inter.variable} ${playfair.variable} ${geistMono.variable}`}
     >
       <body>
-        <Navbar />
-        <main className="flex-1 pt-16 md:pt-[72px]">{children}</main>
-        <Footer />
+        <AppChrome>{children}</AppChrome>
       </body>
     </html>
   );

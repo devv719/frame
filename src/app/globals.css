@@ -13,76 +13,62 @@
 @theme inline {
   /* ── Fonts ── */
   --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-outfit), "Outfit", system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-playfair), "Playfair Display", Georgia, serif;
   --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
 
-  /* ── Color Palette — Lavender / Warm White / Pink ── */
+  /* ── Color Palette — Flat Dark Editorial ── */
 
   /* Background layers */
-  --color-bg-primary: #faf9fc;
-  --color-bg-secondary: #f5f3f8;
-  --color-bg-tertiary: #efedf4;
-  --color-bg-elevated: #ffffff;
-  --color-bg-inverse: #0e0c15;
-  --color-bg-overlay: rgba(14, 12, 21, 0.72);
+  --color-bg-primary: #0e0d0b;
+  --color-bg-secondary: #161410;
+  --color-bg-tertiary: #161410;
+  --color-bg-elevated: #1e1c18;
+  --color-bg-inverse: #e8e2d9;
+  --color-bg-overlay: rgba(14, 13, 11, 0.95);
 
   /* Surface — for cards, modals, panels */
-  --color-surface-primary: #ffffff;
-  --color-surface-secondary: #f8f7fb;
-  --color-surface-tertiary: #f0eef5;
-  --color-surface-glass: rgba(255, 255, 255, 0.64);
+  --color-surface-primary: #161410;
+  --color-surface-secondary: #1e1c18;
+  --color-surface-tertiary: #242220;
+  --color-surface-glass: rgba(22, 20, 16, 0.95);
 
   /* Text hierarchy */
-  --color-text-primary: #1a1625;
-  --color-text-secondary: #6b6480;
-  --color-text-tertiary: #9d96b3;
-  --color-text-inverse: #faf9fc;
-  --color-text-muted: #b8b2cc;
+  --color-text-primary: #e8e2d9;
+  --color-text-secondary: rgba(232, 226, 217, 0.7);
+  --color-text-tertiary: rgba(232, 226, 217, 0.5);
+  --color-text-inverse: #0e0d0b;
+  --color-text-muted: rgba(232, 226, 217, 0.4);
 
-  /* Lavender — primary brand */
-  --color-lavender-50: #f5f3ff;
-  --color-lavender-100: #ede9fe;
-  --color-lavender-200: #ddd6fe;
-  --color-lavender-300: #c4b5fd;
-  --color-lavender-400: #a78bfa;
-  --color-lavender-500: #8b5cf6;
-  --color-lavender-600: #7c3aed;
-  --color-lavender-700: #6d28d9;
-  --color-lavender-800: #5b21b6;
-  --color-lavender-900: #4c1d95;
+  /* Criterion Amber — re-mapped to legacy tokens for fallback compatibility */
+  --color-lavender-50: #1e1c18;
+  --color-lavender-100: #e8d5b0;
+  --color-lavender-200: #e8d5b0;
+  --color-lavender-300: #e8d5b0;
+  --color-lavender-400: #d6c096;
+  --color-lavender-500: #e8d5b0;
+  --color-lavender-600: #d6c096;
+  --color-lavender-700: #bda57b;
+  --color-lavender-800: #a38c62;
+  --color-lavender-900: #8a7249;
 
-  /* Pink — accent */
-  --color-pink-50: #fdf2f8;
-  --color-pink-100: #fce7f3;
-  --color-pink-200: #fbcfe8;
-  --color-pink-300: #f9a8d4;
-  --color-pink-400: #f472b6;
-  --color-pink-500: #ec4899;
-  --color-pink-600: #db2777;
+  /* Amber/Sepia specific names */
+  --color-accent-amber: #e8d5b0;
 
-  /* Warm white spectrum */
-  --color-warm-50: #fffcf9;
-  --color-warm-100: #fef9f3;
-  --color-warm-200: #fdf3e7;
-  --color-warm-300: #fce8d0;
-
-  /* Neutral — for borders, dividers */
-  --color-neutral-100: #f1eff6;
-  --color-neutral-200: #e5e2ed;
-  --color-neutral-300: #d4d0df;
-  --color-neutral-400: #b8b2cc;
-  --color-neutral-500: #9d96b3;
-  --color-neutral-600: #6b6480;
-  --color-neutral-700: #4a4460;
-  --color-neutral-800: #2d2844;
-  --color-neutral-900: #1a1625;
+  /* Pink — mapped to warm dark or amber to eliminate pastels */
+  --color-pink-50: #1e1c18;
+  --color-pink-100: #e8d5b0;
+  --color-pink-200: #e8d5b0;
+  --color-pink-300: #d6c096;
+  --color-pink-400: #bda57b;
+  --color-pink-500: #e8d5b0;
+  --color-pink-600: #a84634;
 
   /* Semantic */
-  --color-border-primary: #e5e2ed;
-  --color-border-secondary: #f1eff6;
-  --color-border-focus: #a78bfa;
+  --color-border-primary: rgba(255, 255, 255, 0.08);
+  --color-border-secondary: rgba(255, 255, 255, 0.06);
+  --color-border-focus: #e8d5b0;
 
-  /* ── Typography Scale (Apple-like precision) ── */
+  /* ── Typography Scale ── */
   --text-display-2xl: 4.5rem;
   --text-display-xl: 3.75rem;
   --text-display-lg: 3rem;
@@ -213,6 +199,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -223,6 +210,7 @@
     opacity: 0;
     transform: translateY(16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -234,6 +222,7 @@
     opacity: 0;
     transform: translateY(-12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -245,6 +234,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -256,6 +246,7 @@
     opacity: 0;
     transform: translateX(24px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -267,6 +258,7 @@
     opacity: 0;
     transform: translateX(-24px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -278,6 +270,7 @@
     opacity: 0;
     filter: blur(8px);
   }
+
   to {
     opacity: 1;
     filter: blur(0);
@@ -285,10 +278,12 @@
 }
 
 @keyframes glow-pulse {
+
   0%,
   100% {
     box-shadow: 0 0 20px rgba(167, 139, 250, 0.1);
   }
+
   50% {
     box-shadow: 0 0 40px rgba(167, 139, 250, 0.2);
   }
@@ -298,6 +293,7 @@
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -343,8 +339,8 @@ body {
 
 /* ── Selection ── */
 ::selection {
-  background-color: var(--color-lavender-200);
-  color: var(--color-lavender-900);
+  background-color: #e8d5b0;
+  color: #0e0d0b;
 }
 
 /* ── Scrollbar ── */
@@ -429,78 +425,73 @@ button {
 @utility scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
-/* Glass morphism */
+/* Flat dark panels */
 @utility glass {
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #161410;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
 @utility glass-heavy {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: #161410;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Gradient utilities */
+/* Flat Accent colors */
 @utility gradient-lavender {
-  background: linear-gradient(135deg, var(--color-lavender-400), var(--color-lavender-600));
+  background: #e8d5b0;
 }
 
 @utility gradient-lavender-pink {
-  background: linear-gradient(135deg, var(--color-lavender-400), var(--color-pink-400));
+  background: #ebdcb9;
 }
 
 @utility gradient-warm {
-  background: linear-gradient(135deg, var(--color-warm-100), var(--color-lavender-50));
+  background: #151412;
 }
 
 @utility gradient-text {
-  background: linear-gradient(135deg, var(--color-lavender-500), var(--color-pink-500));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #e8d5b0;
+  background: none;
+  -webkit-text-fill-color: initial;
 }
 
-/* Shimmer loading effect */
+/* Flat dark shimmer loading */
 @utility shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--color-neutral-100) 0%,
-    var(--color-neutral-200) 50%,
-    var(--color-neutral-100) 100%
-  );
+  background: linear-gradient(90deg,
+      #151412 0%,
+      #1c1a18 50%,
+      #151412 100%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+  animation: shimmer 1.8s ease-in-out infinite;
 }
 
-/* Interactive transitions */
+/* Understated interactive transitions */
 @utility transition-base {
-  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-property: color, background-color, border-color, opacity, transform;
   transition-timing-function: var(--ease-in-out-smooth);
   transition-duration: var(--duration-normal);
 }
 
 @utility transition-fast {
-  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-property: color, background-color, border-color, opacity, transform;
   transition-timing-function: var(--ease-out-quart);
   transition-duration: var(--duration-fast);
 }
 
 @utility hover-lift {
-  transition: transform var(--duration-normal) var(--ease-out-expo),
-    box-shadow var(--duration-normal) var(--ease-out-expo);
+  transition: border-color var(--duration-normal) var(--ease-out-expo),
+              background-color var(--duration-normal) var(--ease-out-expo),
+              transform var(--duration-normal) var(--ease-out-expo);
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    border-color: rgba(232, 213, 176, 0.25);
+    background-color: #1e1c18;
   }
 }
 
@@ -508,15 +499,15 @@ button {
   transition: transform var(--duration-normal) var(--ease-out-expo);
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 }
 
 @utility hover-glow {
-  transition: box-shadow var(--duration-slow) var(--ease-in-out-smooth);
+  transition: border-color var(--duration-slow) var(--ease-in-out-smooth);
 
   &:hover {
-    box-shadow: var(--shadow-glow-lavender);
+    border-color: rgba(232, 213, 176, 0.2);
   }
 }
 
@@ -593,55 +584,66 @@ button {
    RESPONSIVE TYPOGRAPHY — Fluid Scaling
    ──────────────────────────────────────────────────────────── */
 
-h1, .h1 {
+h1,
+.h1 {
   font-family: var(--font-display);
   font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem);
-  font-weight: 600;
+  font-weight: 400;
+  font-style: italic;
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-tighter);
   color: var(--color-text-primary);
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-family: var(--font-display);
   font-size: clamp(1.875rem, 3vw + 0.5rem, 3rem);
-  font-weight: 600;
+  font-weight: 400;
+  font-style: italic;
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 2vw + 0.5rem, 2.25rem);
-  font-weight: 500;
+  font-weight: 400;
+  font-style: italic;
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
 }
 
-h4, .h4 {
+h4,
+.h4 {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 1.5vw + 0.25rem, 1.5rem);
-  font-weight: 500;
+  font-weight: 400;
+  font-style: italic;
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-normal);
   color: var(--color-text-primary);
 }
 
-h5, .h5 {
+h5,
+.h5 {
   font-family: var(--font-display);
   font-size: var(--text-heading-md);
-  font-weight: 500;
+  font-weight: 400;
+  font-style: italic;
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-normal);
   color: var(--color-text-primary);
 }
 
-h6, .h6 {
-  font-family: var(--font-display);
+h6,
+.h6 {
+  font-family: var(--font-sans);
   font-size: var(--text-heading-sm);
-  font-weight: 500;
+  font-weight: 400;
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;

@@ -35,8 +35,8 @@ export function FeaturedMovieCard({
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       onClick={onClick}
       className={cn(
-        "group relative w-full rounded-3xl overflow-hidden cursor-pointer border border-border-secondary shadow-lg",
-        "bg-neutral-950 min-h-[360px] md:min-h-[460px] flex flex-col justify-end",
+        "group relative w-full overflow-hidden cursor-pointer border border-white/5",
+        "bg-[#161410] min-h-[360px] md:min-h-[460px] flex flex-col justify-end",
         className
       )}
     >
@@ -50,9 +50,9 @@ export function FeaturedMovieCard({
           sizes="100vw"
           priority
         />
-        {/* Soft dark vignette gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/40 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/80 via-transparent to-transparent hidden md:block" />
+        {/* Dark vignette gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0d0b] via-[#0e0d0b]/35 to-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0e0d0b]/75 via-transparent to-transparent hidden md:block" />
       </div>
 
       {/* Floating Info Overlay */}
@@ -73,7 +73,7 @@ export function FeaturedMovieCard({
         </div>
 
         {/* Title & Tagline */}
-        <h2 className="text-display text-[2rem] md:text-[3rem] lg:text-[3.5rem] font-semibold leading-tight tracking-tight text-white mb-3">
+        <h2 className="font-display italic font-normal text-[2rem] md:text-[2.75rem] lg:text-[3.25rem] leading-[1.1] tracking-tight text-[#e8e2d9] mb-3">
           {movie.title}
         </h2>
         
@@ -127,9 +127,9 @@ export function FeaturedMovieCard({
         </div>
       </div>
 
-      {/* Subtle bottom line gradient */}
+      {/* Amber accent bottom line */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-lavender-500 via-pink-400 to-transparent opacity-70"
+        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-[#e8d5b0] via-[#e8d5b0]/40 to-transparent"
         aria-hidden="true"
       />
     </motion.article>
@@ -140,7 +140,7 @@ export function FeaturedMovieCardSkeleton({ className }: { className?: string })
   return (
     <div
       className={cn(
-        "w-full rounded-3xl overflow-hidden bg-neutral-900 min-h-[360px] md:min-h-[460px] relative flex flex-col justify-end p-6 md:p-10 lg:p-12 border border-border-secondary shadow-lg overflow-hidden",
+        "w-full overflow-hidden bg-[#161410] min-h-[360px] md:min-h-[460px] relative flex flex-col justify-end p-6 md:p-10 lg:p-12 border border-white/5",
         className
       )}
     >
