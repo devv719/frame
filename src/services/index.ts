@@ -4,3 +4,4 @@
  */
 
 export * from "./tmdb";
+export * from "./curated-collections";

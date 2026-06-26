@@ -5,9 +5,9 @@
 
 export const SITE_CONFIG = {
   name: "Frame",
-  tagline: "Cinema, Reimagined",
+  tagline: "A personal archive for every story you've watched",
   description:
-    "A cinematic movie discovery platform focused on aesthetics, visual storytelling, and exploration.",
+    "A personal memory archive and digital scrapbook for cinema lovers to record, organize, remember, and rediscover everything they've watched.",
   url: "https://frame.film",
   locale: "en-US",
   author: "Frame Studio",
@@ -15,16 +15,18 @@ export const SITE_CONFIG = {
 
 export const NAV_LINKS = [
   { label: "Discover", href: "/discover" },
-  { label: "Collections", href: "/collections" },
-  { label: "Map", href: "/map" },
-  { label: "Stories", href: "/stories" },
+  { label: "Atlas", href: "/atlas" },
+  { label: "Journal", href: "/journal" },
+  { label: "Timeline", href: "/timeline" },
+  { label: "Shelf", href: "/shelf" },
+  { label: "Wrapped", href: "/wrapped" },
 ] as const;
 
 export const FOOTER_LINKS = {
   platform: [
     { label: "Discover", href: "/discover" },
     { label: "Collections", href: "/collections" },
-    { label: "Film Map", href: "/map" },
+    { label: "Atlas", href: "/atlas" },
     { label: "Stories", href: "/stories" },
   ],
   company: [
