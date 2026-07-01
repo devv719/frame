@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { getCinemaLogs, deleteCinemaLog, CinemaLog } from "@/lib/supabase";
+import { getArchiveLogs, deleteArchiveLog } from "@/services/archiveService";
+import { type CinemaLog } from "@/lib/supabase";
+import { useAuth } from "@/context/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { Star, Trash2, Calendar, Sparkles, BookOpen, Quote, Film } from "lucide-react";
 import { LogModal } from "@/components/ui";
 import { getPosterUrl } from "@/services/tmdb";
@@ -21,14 +24,16 @@ const MOOD_PILLS: Record<string, string> = {
 };
 
 export default function JournalPage() {
+  const { user } = useAuth();
   const [logs, setLogs] = useState<CinemaLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLogOpen, setIsLogOpen] = useState(false);
 
   const fetchLogs = async () => {
+    if (!user) return;
     setLoading(true);
     try {
-      const data = await getCinemaLogs();
+      const data = await getArchiveLogs(user.uid);
       setLogs(data);
     } catch (err) {
       console.error(err);
@@ -39,7 +44,7 @@ export default function JournalPage() {
 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this cinema memory?")) {
-      const success = await deleteCinemaLog(id);
+      const success = await deleteArchiveLog(id);
       if (success) {
         setLogs((prev) => prev.filter((log) => log.id !== id));
         window.dispatchEvent(new CustomEvent("cinema-log-updated"));
@@ -48,13 +53,15 @@ export default function JournalPage() {
   };
 
   useEffect(() => {
-    fetchLogs();
+    if (user) {
+      fetchLogs();
+    }
 
     if (typeof window !== "undefined") {
       window.addEventListener("cinema-log-updated", fetchLogs);
       return () => window.removeEventListener("cinema-log-updated", fetchLogs);
     }
-  }, []);
+  }, [user]);
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -67,6 +74,7 @@ export default function JournalPage() {
   };
 
   return (
+    <ProtectedRoute>
     <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12">
       <div className="max-w-2xl mx-auto">
         {/* Page Header */}
@@ -237,5 +245,6 @@ export default function JournalPage() {
 
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
     </main>
+    </ProtectedRoute>
   );
 }

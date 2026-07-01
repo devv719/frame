@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    // Force Next.js Turbopack to treat the project folder as the root
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {
@@ -14,4 +18,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
 

@@ -32,7 +32,8 @@ import {
 import { cn } from "@/lib/utils";
 import { CURATED_MOVIE_LOCATIONS } from "./curated-locations";
 import type { MovieLocation, MovieLocationKind } from "./types";
-import { getCinemaLogs, type CinemaLog } from "@/lib/supabase";
+import { getArchiveLogs, type CinemaLog } from "@/services/archiveService";
+import { useAuth } from "@/context/AuthContext";
 
 const INITIAL_VIEWPORT: MapViewport = {
   center: [24, 30],
@@ -112,9 +113,13 @@ export function AtlasPage() {
 
   const cacheRef = useRef<Record<string, any[]>>({});
 
+  const { user } = useAuth();
+
   useEffect(() => {
-    getCinemaLogs().then(setLogs).catch(console.error);
-  }, []);
+    if (user) {
+      getArchiveLogs(user.uid).then(setLogs).catch(console.error);
+    }
+  }, [user]);
 
   const watchedCountryCodes = useMemo(() => {
     const codes = new Set<string>();
