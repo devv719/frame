@@ -5,3 +5,5 @@
 
 export * from "./tmdb";
 export * from "./curated-collections";
+export * from "./archiveService";
+

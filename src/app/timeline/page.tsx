@@ -4,7 +4,9 @@ import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { getCinemaLogs, CinemaLog } from "@/lib/supabase";
+import { getArchiveLogs, type CinemaLog } from "@/services/archiveService";
+import { useAuth } from "@/context/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { Calendar, Film, Star, Plus } from "lucide-react";
 import { LogModal } from "@/components/ui";
 import { getPosterUrl } from "@/services/tmdb";
@@ -45,14 +47,16 @@ const MOOD_TEXTS: Record<string, string> = {
 };
 
 export default function TimelinePage() {
+  const { user } = useAuth();
   const [logs, setLogs] = useState<CinemaLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLogOpen, setIsLogOpen] = useState(false);
 
   const fetchLogs = async () => {
+    if (!user) return;
     setLoading(true);
     try {
-      const data = await getCinemaLogs();
+      const data = await getArchiveLogs(user.uid);
       setLogs(data);
     } catch (err) {
       console.error(err);
@@ -62,13 +66,13 @@ export default function TimelinePage() {
   };
 
   useEffect(() => {
-    fetchLogs();
+    if (user) fetchLogs();
 
     if (typeof window !== "undefined") {
       window.addEventListener("cinema-log-updated", fetchLogs);
       return () => window.removeEventListener("cinema-log-updated", fetchLogs);
     }
-  }, []);
+  }, [user]);
 
   const grouped = useMemo((): GroupedLogs[] => {
     const groups: Record<number, Record<number, CinemaLog[]>> = {};
@@ -102,6 +106,7 @@ export default function TimelinePage() {
   }, [logs]);
 
   return (
+    <ProtectedRoute>
     <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12">
       <div className="max-w-xl mx-auto">
         {/* Header */}
@@ -265,5 +270,6 @@ export default function TimelinePage() {
 
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
     </main>
+    </ProtectedRoute>
   );
 }

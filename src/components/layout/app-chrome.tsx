@@ -7,7 +7,7 @@ import { ShaderBackground, FilmGrain, CursorGlow } from "@/components/ui";
 
 export function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isFullscreenRoute = pathname?.startsWith("/atlas");
+  const isFullscreenRoute = pathname?.startsWith("/atlas") || pathname === "/login";
 
   return (
     <>

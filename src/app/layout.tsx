@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import { AppChrome } from "@/components/layout/app-chrome";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 /* ── Font Configuration ── */
@@ -86,7 +87,9 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} ${geistMono.variable}`}
     >
       <body>
-        <AppChrome>{children}</AppChrome>
+        <AuthProvider>
+          <AppChrome>{children}</AppChrome>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -4,3 +4,7 @@
  */
 
 export { Navbar, Footer } from "./layout";
+export { default as LogMovieForm } from "./LogMovieForm";
+export { default as ProtectedRoute } from "./ProtectedRoute";
+
+

@@ -4,20 +4,24 @@ import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { getCinemaLogs, CinemaLog } from "@/lib/supabase";
+import { getArchiveLogs, type CinemaLog } from "@/services/archiveService";
+import { useAuth } from "@/context/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { Film, Plus, Star, Award, Layers, Hash } from "lucide-react";
 import { LogModal } from "@/components/ui";
 import { getPosterUrl } from "@/services/tmdb";
 
 export default function ShelfPage() {
+  const { user } = useAuth();
   const [logs, setLogs] = useState<CinemaLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLogOpen, setIsLogOpen] = useState(false);
 
   const fetchLogs = async () => {
+    if (!user) return;
     setLoading(true);
     try {
-      const data = await getCinemaLogs();
+      const data = await getArchiveLogs(user.uid);
       setLogs(data);
     } catch (err) {
       console.error(err);
@@ -27,13 +31,13 @@ export default function ShelfPage() {
   };
 
   useEffect(() => {
-    fetchLogs();
+    if (user) fetchLogs();
 
     if (typeof window !== "undefined") {
       window.addEventListener("cinema-log-updated", fetchLogs);
       return () => window.removeEventListener("cinema-log-updated", fetchLogs);
     }
-  }, []);
+  }, [user]);
 
   // Compute stats pills
   const stats = useMemo(() => {
@@ -75,6 +79,7 @@ export default function ShelfPage() {
   }, [logs]);
 
   return (
+    <ProtectedRoute>
     <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12 relative">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
@@ -255,5 +260,6 @@ export default function ShelfPage() {
 
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
     </main>
+    </ProtectedRoute>
   );
 }
