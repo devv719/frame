@@ -84,7 +84,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "flex items-center justify-center w-9 h-9 rounded-lg",
+                    "flex items-center justify-center w-9 h-9",
                     "bg-[#161410] border border-white/5 text-text-secondary",
                     "hover:border-[#e8d5b0]/30 hover:text-[#e8d5b0]",
                     "transition-all duration-[250ms]"
@@ -115,9 +115,9 @@ export function Footer() {
           </motion.div>
 
           <motion.div variants={staggerItem}>
-            <h3 className="text-overline-style mb-4">Company</h3>
+            <h3 className="text-overline-style mb-4">Personal</h3>
             <ul className="flex flex-col gap-2.5">
-              {FOOTER_LINKS.company.map((link) => (
+              {FOOTER_LINKS.personal.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -131,7 +131,7 @@ export function Footer() {
           </motion.div>
 
           <motion.div variants={staggerItem}>
-            <h3 className="text-overline-style mb-4">Legal</h3>
+            <h3 className="text-overline-style mb-4">Account</h3>
             <ul className="flex flex-col gap-2.5">
               {FOOTER_LINKS.legal.map((link) => (
                 <li key={link.href}>

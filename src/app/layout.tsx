@@ -69,10 +69,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#faf9fc",
+  themeColor: "#0e0d0b",
   width: "device-width",
   initialScale: 1,
 };
+
+import { ToastContainer } from "@/components/ui/toast";
 
 /* ── Root Layout ── */
 
@@ -89,6 +91,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <AppChrome>{children}</AppChrome>
+          <ToastContainer />
         </AuthProvider>
       </body>
     </html>

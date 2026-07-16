@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getArchiveLogs, computeArchiveStats, type CinemaLog } from "@/services/archiveService";
 import { useAuth } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { ChevronLeft, Film, Star } from "lucide-react";
+import { ChevronLeft, Film, Star, Loader2 } from "lucide-react";
 
 export default function WrappedPage() {
   const { user } = useAuth();
@@ -64,12 +64,12 @@ export default function WrappedPage() {
   if (loading) {
     return (
       <ProtectedRoute>
-      <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] flex flex-col items-center justify-center select-none">
-        <Film size={32} className="animate-spin text-[#e8d5b0] mb-4" />
+      <div className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] flex flex-col items-center justify-center select-none">
+        <Loader2 size={32} className="animate-spin text-[#e8d5b0] mb-4" />
         <p className="text-[0.6875rem] font-bold tracking-[0.2em] uppercase text-[#a8a29e]">
           Compiling Retrospective...
         </p>
-      </main>
+      </div>
       </ProtectedRoute>
     );
   }
@@ -77,7 +77,7 @@ export default function WrappedPage() {
   if (!stats || stats.totalCount === 0) {
     return (
       <ProtectedRoute>
-      <main className="min-h-screen bg-[#0e0d0b] text-white flex flex-col items-center justify-center p-6 text-center select-none">
+      <div className="min-h-screen bg-[#0e0d0b] text-white flex flex-col items-center justify-center p-6 text-center select-none">
         <Film size={36} className="text-[#3e3a38] mb-6" />
         <h1 className="text-[1.5rem] font-display italic text-[#f4f2ed] mb-2">
           Nothing to wrap yet
@@ -91,14 +91,14 @@ export default function WrappedPage() {
         >
           Open Your Shelf
         </Link>
-      </main>
+      </div>
       </ProtectedRoute>
     );
   }
 
   return (
     <ProtectedRoute>
-    <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12 relative">
+    <div className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-8 md:pt-12 pb-20 px-6 md:px-12 relative">
       <div className="absolute top-6 left-6 z-50 select-none">
         <Link
           href="/shelf"
@@ -196,7 +196,7 @@ export default function WrappedPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
     </ProtectedRoute>
   );
 }

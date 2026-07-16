@@ -7,6 +7,8 @@ import Image from "next/image";
 import { logMovie } from "@/lib/supabase";
 import { getPosterUrl } from "@/services/tmdb";
 
+import { toast } from "./toast";
+
 const MOODS = [
   { id: "Inspired", label: "✦ Inspired" },
   { id: "Heartbroken", label: "✦ Heartbroken" },
@@ -54,6 +56,67 @@ export function LogModal({ isOpen, onClose, onSuccess }: LogModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleClose = () => {
+    setSearchQuery("");
+    setSearchResults([]);
+    setIsSearching(false);
+    setSelectedMovie(null);
+    setRating(4.0);
+    setHoveredRating(null);
+    setSelectedMood("Thoughtful");
+    setFavoriteScene("");
+    setNotes("");
+    setWatchedDate(new Date().toISOString().split("T")[0]);
+    setIsRewatched(false);
+    setMediaType("movie");
+    setStep("search");
+    onClose();
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const focusableElements = modalRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements?.[0] as HTMLElement;
+    const lastElement = focusableElements?.[focusableElements.length - 1] as HTMLElement;
+
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          lastElement?.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          firstElement?.focus();
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleTabKey);
+    setTimeout(() => {
+      firstElement?.focus();
+    }, 50);
+
+    return () => window.removeEventListener("keydown", handleTabKey);
+  }, [isOpen, step, searchResults]);
 
   const performSearch = async (query: string) => {
     if (!query.trim()) {
@@ -90,9 +153,9 @@ export function LogModal({ isOpen, onClose, onSuccess }: LogModalProps) {
       return;
     }
 
-    setIsSearching(true);
     setSearchError(null);
     searchTimeoutRef.current = setTimeout(() => {
+      setIsSearching(true);
       performSearch(searchQuery);
     }, 350);
 
@@ -172,6 +235,9 @@ export function LogModal({ isOpen, onClose, onSuccess }: LogModalProps) {
         production_countries: selectedMovie.production_countries || [],
       });
 
+      // Show success toast feedback
+      toast(`"${selectedMovie.title}" logged successfully`, "success");
+
       // Clear states
       setSearchQuery("");
       setSearchResults([]);
@@ -182,9 +248,10 @@ export function LogModal({ isOpen, onClose, onSuccess }: LogModalProps) {
       setSelectedMovie(null);
       
       onSuccess?.();
-      onClose();
+      handleClose();
     } catch (err) {
       console.error("Failed to log watch:", err);
+      toast("Failed to log watch memory", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -204,12 +271,13 @@ export function LogModal({ isOpen, onClose, onSuccess }: LogModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute inset-0 bg-black/80"
           />
 
           {/* Modal Container (Criterion Charcoal Booklet) */}
           <motion.div
+            ref={modalRef}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
@@ -229,7 +297,7 @@ export function LogModal({ isOpen, onClose, onSuccess }: LogModalProps) {
                 </p>
               </div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="p-1 text-[#a8a29e] hover:text-[#e8d5b0] transition-colors"
                 aria-label="Close modal"
               >

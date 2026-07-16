@@ -138,8 +138,8 @@
   --shadow-lg: 0 10px 15px -3px rgba(26, 22, 37, 0.06), 0 4px 6px -4px rgba(26, 22, 37, 0.04);
   --shadow-xl: 0 20px 25px -5px rgba(26, 22, 37, 0.08), 0 8px 10px -6px rgba(26, 22, 37, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(26, 22, 37, 0.16);
-  --shadow-glow-lavender: 0 0 24px rgba(167, 139, 250, 0.15);
-  --shadow-glow-pink: 0 0 24px rgba(244, 114, 182, 0.12);
+  --shadow-glow-amber: 0 0 24px rgba(232, 213, 176, 0.15);
+  --shadow-glow-warm: 0 0 24px rgba(214, 192, 150, 0.12);
 
   /* ── Transitions ── */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -281,11 +281,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.1);
+    box-shadow: 0 0 20px rgba(232, 213, 176, 0.06);
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(167, 139, 250, 0.2);
+    box-shadow: 0 0 40px rgba(232, 213, 176, 0.12);
   }
 }
 
@@ -354,12 +354,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-neutral-300);
+  background: rgba(232, 213, 176, 0.15);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neutral-400);
+  background: rgba(232, 213, 176, 0.25);
 }
 
 /* ── Media defaults ── */

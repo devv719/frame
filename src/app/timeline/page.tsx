@@ -107,7 +107,7 @@ export default function TimelinePage() {
 
   return (
     <ProtectedRoute>
-    <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12">
+    <div className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-8 md:pt-12 pb-20 px-6 md:px-12">
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-[#292524] pb-8">
@@ -121,10 +121,10 @@ export default function TimelinePage() {
           </div>
           <button
             onClick={() => setIsLogOpen(true)}
-            className="px-5 py-3 bg-[#e8d5b0] hover:bg-[#d6c096] text-[#0e0d0b] text-[0.75rem] font-bold uppercase tracking-wider transition-colors active:scale-[0.98] cursor-pointer"
+            className="flex items-center justify-center gap-2 px-5 py-3 bg-[#e8d5b0] hover:bg-[#d6c096] text-[#0e0d0b] text-[0.75rem] font-bold uppercase tracking-wider transition-colors active:scale-[0.98] cursor-pointer"
           >
-            <Plus size={14} />
-            Log a Memory
+            <Plus size={14} className="shrink-0" />
+            <span>Log a Memory</span>
           </button>
         </div>
 
@@ -187,7 +187,13 @@ export default function TimelinePage() {
                         const watchedDay = new Date(log.watched_at).getDate().toString().padStart(2, "0");
 
                         return (
-                          <div key={log.id} className="flex items-center gap-4 relative group select-none">
+                          <motion.div
+                            key={log.id}
+                            initial={{ opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            className="flex items-center gap-4 relative group select-none"
+                          >
                             {/* Colored mood dot on the left timeline axis */}
                             <div className={`absolute left-[-38.5px] top-[14px] w-[9px] h-[9px] rounded-full border-2 border-[#0e0d0b] ${dotColor} z-10`} />
 
@@ -251,7 +257,7 @@ export default function TimelinePage() {
                                 </span>
                               </div>
                             </div>
-                          </div>
+                          </motion.div>
                         );
                       })}
                     </div>
@@ -269,7 +275,7 @@ export default function TimelinePage() {
       </div>
 
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
-    </main>
+    </div>
     </ProtectedRoute>
   );
 }

@@ -9,7 +9,7 @@ import { type CinemaLog } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Star, Trash2, Calendar, Sparkles, BookOpen, Quote, Film } from "lucide-react";
-import { LogModal } from "@/components/ui";
+import { LogModal, toast } from "@/components/ui";
 import { getPosterUrl } from "@/services/tmdb";
 
 const MOOD_PILLS: Record<string, string> = {
@@ -28,6 +28,7 @@ export default function JournalPage() {
   const [logs, setLogs] = useState<CinemaLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLogOpen, setIsLogOpen] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const fetchLogs = async () => {
     if (!user) return;
@@ -42,14 +43,8 @@ export default function JournalPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this cinema memory?")) {
-      const success = await deleteArchiveLog(id);
-      if (success) {
-        setLogs((prev) => prev.filter((log) => log.id !== id));
-        window.dispatchEvent(new CustomEvent("cinema-log-updated"));
-      }
-    }
+  const handleDelete = (id: string) => {
+    setDeleteConfirmId(id);
   };
 
   useEffect(() => {
@@ -75,7 +70,7 @@ export default function JournalPage() {
 
   return (
     <ProtectedRoute>
-    <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12">
+    <div className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-8 md:pt-12 pb-20 px-6 md:px-12">
       <div className="max-w-2xl mx-auto">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-[#292524] pb-8">
@@ -244,7 +239,60 @@ export default function JournalPage() {
       </div>
 
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
-    </main>
+    </div>
+
+    <AnimatePresence>
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setDeleteConfirmId(null)}
+            className="absolute inset-0 bg-black/80"
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-sm bg-[#0e0d0b] border border-[#292524] p-6 text-center z-10 rounded-none"
+          >
+            <h4 className="text-[1rem] font-sans font-medium uppercase tracking-[0.15em] text-[#e8d5b0] mb-2 select-none">
+              Remove Memory
+            </h4>
+            <p className="text-[0.75rem] text-[#a8a29e] mb-6 tracking-wide leading-relaxed select-none">
+              Are you sure you want to permanently erase this cinema reflection from your archive?
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => setDeleteConfirmId(null)}
+                className="px-4 py-2 border border-[#292524] text-[#a8a29e] hover:text-[#f4f2ed] hover:border-[#e8d5b0]/40 text-[0.72rem] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  const id = deleteConfirmId;
+                  setDeleteConfirmId(null);
+                  const success = await deleteArchiveLog(id);
+                  if (success) {
+                    setLogs((prev) => prev.filter((log) => log.id !== id));
+                    window.dispatchEvent(new CustomEvent("cinema-log-updated"));
+                    toast("Cinema memory deleted successfully", "success");
+                  } else {
+                    toast("Failed to delete cinema memory", "error");
+                  }
+                }}
+                className="px-4 py-2 bg-red-950/20 border border-red-950 text-red-400 hover:bg-red-500 hover:text-[#0e0d0b] hover:border-red-500 text-[0.72rem] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
     </ProtectedRoute>
   );
 }
