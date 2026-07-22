@@ -6,10 +6,10 @@ import { AlertCircle } from "lucide-react";
 
 export default function Error({
   error,
-  reset,
+  unstable_retry,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
+  unstable_retry: () => void;
 }) {
   useEffect(() => {
     console.error("Application Error Boundary captured:", error);
@@ -39,7 +39,7 @@ export default function Error({
         </p>
 
         <button
-          onClick={reset}
+          onClick={unstable_retry}
           className="px-6 py-3.5 border border-[#e8d5b0]/30 hover:border-[#e8d5b0] bg-transparent hover:bg-[#e8d5b0] text-[#e8d5b0] hover:text-[#0e0d0b] transition-all duration-300 font-sans font-medium uppercase tracking-[0.2em] text-[0.75rem] cursor-pointer"
         >
           Try Again

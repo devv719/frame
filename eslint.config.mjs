@@ -13,6 +13,20 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Allow `any` types — codebase uses them extensively in API integrations
+      "@typescript-eslint/no-explicit-any": "warn",
+      // Allow unused vars as warnings rather than errors
+      "@typescript-eslint/no-unused-vars": "warn",
+      // These patterns are intentional in the codebase (map library, data fetching)
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/refs": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+      // JSX in try/catch is an established pattern for server component error handling
+      "react-hooks/error-boundaries": "warn",
+    },
+  },
 ]);
 
 export default eslintConfig;

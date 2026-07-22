@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { getArchiveLogs, computeArchiveStats, type CinemaLog } from "@/services/archiveService";
+import { getArchiveLogs, computeArchiveStats } from "@/services/archiveService";
+import { type CinemaLog } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { ChevronLeft, Film, Star, Loader2 } from "lucide-react";

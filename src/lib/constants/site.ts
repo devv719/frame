@@ -29,7 +29,7 @@ export const FOOTER_LINKS = {
     { label: "Journal", href: "/journal" },
     { label: "Timeline", href: "/timeline" },
   ],
-  personal: [
+  company: [
     { label: "Shelf", href: "/shelf" },
     { label: "Wrapped", href: "/wrapped" },
   ],

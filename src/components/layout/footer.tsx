@@ -101,7 +101,7 @@ export function Footer() {
           <motion.div variants={staggerItem}>
             <h3 className="text-overline-style mb-4">Platform</h3>
             <ul className="flex flex-col gap-2.5">
-              {FOOTER_LINKS.platform.map((link) => (
+              {FOOTER_LINKS.platform?.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -115,9 +115,9 @@ export function Footer() {
           </motion.div>
 
           <motion.div variants={staggerItem}>
-            <h3 className="text-overline-style mb-4">Personal</h3>
+            <h3 className="text-overline-style mb-4">Company</h3>
             <ul className="flex flex-col gap-2.5">
-              {FOOTER_LINKS.personal.map((link) => (
+              {FOOTER_LINKS.company?.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -131,9 +131,9 @@ export function Footer() {
           </motion.div>
 
           <motion.div variants={staggerItem}>
-            <h3 className="text-overline-style mb-4">Account</h3>
+            <h3 className="text-overline-style mb-4">Legal</h3>
             <ul className="flex flex-col gap-2.5">
-              {FOOTER_LINKS.legal.map((link) => (
+              {FOOTER_LINKS.legal?.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
