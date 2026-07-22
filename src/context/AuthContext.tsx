@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
+  type User,
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
@@ -9,8 +10,15 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
+interface AuthContextValue {
+  user: User | null;
+  loading: boolean;
+  loginWithGoogle: () => Promise<void>;
+  logout: () => Promise<void>;
+}
+
 // Create context with default null values
-const AuthContext = createContext({
+const AuthContext = createContext<AuthContextValue>({
   user: null,
   loading: true,
   loginWithGoogle: async () => {},
@@ -21,8 +29,8 @@ const AuthContext = createContext({
  * AuthProvider component that wraps the layout structure and
  * exposes the Google Sign-in status and trigger actions.
  */
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -46,7 +46,6 @@ export function CompactMovieCard({
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="80px"
-            unoptimized
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center p-1 bg-[#161410] border border-white/5">

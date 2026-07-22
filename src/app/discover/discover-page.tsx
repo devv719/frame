@@ -189,6 +189,7 @@ export function DiscoverPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search films, directors..."
+                    aria-label="Search films by title or director"
                     className="w-full pl-11 pr-10 py-3.5 bg-transparent text-[0.875rem] text-[#e8e2d9] placeholder-[rgba(232,226,217,0.3)] focus:outline-none font-sans"
                   />
                   {searchQuery && (
@@ -315,38 +316,11 @@ export function DiscoverPage() {
 }
  
 function MasonryGrid({ movies }: { movies: Movie[] }) {
-  const [columnsCount, setColumnsCount] = useState(4);
- 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1200) {
-        setColumnsCount(4);
-      } else if (window.innerWidth >= 992) {
-        setColumnsCount(3);
-      } else if (window.innerWidth >= 640) {
-        setColumnsCount(2);
-      } else {
-        setColumnsCount(2);
-      }
-    };
- 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
- 
-  const cols = Array.from({ length: columnsCount }, (): Movie[] => []);
-  movies.forEach((movie, idx) => {
-    cols[idx % columnsCount].push(movie);
-  });
- 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 select-none">
-      {cols.map((col, colIdx) => (
-        <div key={`col-${colIdx}`} className="flex flex-col gap-6">
-          {col.map((movie) => (
-            <MasonryCard key={movie.id} movie={movie} />
-          ))}
+    <div className="columns-2 sm:columns-3 lg:columns-4 gap-6 space-y-6 select-none">
+      {movies.map((movie) => (
+        <div key={movie.id} className="break-inside-avoid">
+          <MasonryCard movie={movie} />
         </div>
       ))}
     </div>

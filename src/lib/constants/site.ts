@@ -25,20 +25,16 @@ export const NAV_LINKS = [
 export const FOOTER_LINKS = {
   platform: [
     { label: "Discover", href: "/discover" },
-    { label: "Collections", href: "/collections" },
     { label: "Atlas", href: "/atlas" },
-    { label: "Stories", href: "/stories" },
+    { label: "Journal", href: "/journal" },
+    { label: "Timeline", href: "/timeline" },
   ],
   company: [
-    { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
-    { label: "Careers", href: "/careers" },
-    { label: "Press", href: "/press" },
+    { label: "Shelf", href: "/shelf" },
+    { label: "Wrapped", href: "/wrapped" },
   ],
   legal: [
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
-    { label: "Cookies", href: "/cookies" },
+    { label: "Login", href: "/login" },
   ],
 } as const;
 

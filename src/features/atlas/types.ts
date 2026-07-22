@@ -1,6 +1,39 @@
 import type { CinemaLog } from "@/lib/supabase";
 
 /* ═══════════════════════════════════════════════════════════
+   MOVIE LOCATION — Type Definitions
+   ═══════════════════════════════════════════════════════════ */
+
+/** The kind/category of a filming location */
+export type MovieLocationKind = "primary" | "landmark" | "studio" | "landscape";
+
+/** A single curated movie filming location */
+export interface MovieLocation {
+  id: string;
+  movieId: number;
+  movieTitle: string;
+  year: number;
+  director: string;
+  genre: string;
+  locationName: string;
+  city: string;
+  country: string;
+  coordinates: [number, number]; // [longitude, latitude]
+  kind: MovieLocationKind;
+  scene: string;
+  synopsis: string;
+  mood: string;
+  productionWindow: string;
+  poster: string;
+  datasetSource: string;
+}
+
+/** Repository interface for fetching movie locations */
+export interface MovieLocationRepository {
+  listLocations(): Promise<MovieLocation[]>;
+}
+
+/* ═══════════════════════════════════════════════════════════
    YOUR CINEMA ATLAS — Type Definitions
    ═══════════════════════════════════════════════════════════ */
 

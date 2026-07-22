@@ -38,7 +38,18 @@ export default function LoginPage() {
   };
 
   if (loading) {
-    return null;
+    return (
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505] text-[#f4f2ed] select-none">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 rounded-none border border-t-[#e8d5b0] border-[#e8d5b0]/20 animate-spin flex items-center justify-center">
+            <Film size={24} className="text-[#e8d5b0] animate-pulse" />
+          </div>
+          <span className="text-[10px] uppercase tracking-[0.25em] font-sans text-stone-500 font-semibold mt-4">
+            Securing Vault...
+          </span>
+        </div>
+      </div>
+    );
   }
 
   return (

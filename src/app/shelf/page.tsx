@@ -4,7 +4,8 @@ import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { getArchiveLogs, type CinemaLog } from "@/services/archiveService";
+import { getArchiveLogs } from "@/services/archiveService";
+import { type CinemaLog } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Film, Plus, Star, Award, Layers, Hash } from "lucide-react";
@@ -80,7 +81,7 @@ export default function ShelfPage() {
 
   return (
     <ProtectedRoute>
-    <main className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-24 pb-20 px-6 md:px-12 relative">
+    <div className="min-h-screen bg-[#0e0d0b] text-[#f4f2ed] pt-8 md:pt-12 pb-20 px-6 md:px-12 relative">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-[#292524] pb-8">
@@ -259,7 +260,7 @@ export default function ShelfPage() {
       </div>
 
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
-    </main>
+    </div>
     </ProtectedRoute>
   );
 }
