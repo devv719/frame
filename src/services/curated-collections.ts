@@ -154,7 +154,7 @@ export const CURATED_LOCATIONS: CuratedLocation[] = [
       "Two Americans stranded in a Tokyo hotel discover an unexpected connection amid jet lag and existential malaise.",
     mood: "Bittersweet solitude",
     productionWindow: "Autumn 2002",
-    posterPath: "/wXsQvli6tWqja5Jag9cMoEBJBaR.jpg",
+    posterPath: "/3jCLmYDIIiSMPujbwygNpqdpM8N.jpg",
     datasetSource: "tmdb",
   },
   {
@@ -175,7 +175,7 @@ export const CURATED_LOCATIONS: CuratedLocation[] = [
       "A shy waitress discovers the power of spreading joy through elaborate, anonymous acts of kindness across Paris.",
     mood: "Whimsical delight",
     productionWindow: "Summer 2000",
-    posterPath: "/nSxDa3ppafYYIt0hbsYYoBN4gUQ.jpg",
+    posterPath: "/nSxDa3M9aMvGVLoItzWTepQ5h5d.jpg",
     datasetSource: "tmdb",
   },
   {
@@ -217,7 +217,7 @@ export const CURATED_LOCATIONS: CuratedLocation[] = [
       "A team of explorers travels through a wormhole near Saturn in search of a new home for humanity as Earth faces ecological collapse.",
     mood: "Cosmic awe",
     productionWindow: "Late 2013",
-    posterPath: "/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    posterPath: "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
     datasetSource: "tmdb",
   },
   {
@@ -238,7 +238,7 @@ export const CURATED_LOCATIONS: CuratedLocation[] = [
       "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
     mood: "Savage grandeur",
     productionWindow: "Early 1999",
-    posterPath: "/ty8TGRuvJLPUmAR1H1nRIsgpvim.jpg",
+    posterPath: "/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg",
     datasetSource: "tmdb",
   },
   {
@@ -259,10 +259,11 @@ export const CURATED_LOCATIONS: CuratedLocation[] = [
       "A young girl is sold to a geisha house where she endures hardship, trains as a geisha, and ultimately becomes one of the most celebrated in Japan.",
     mood: "Elegant yearning",
     productionWindow: "Autumn 2004",
-    posterPath: "/mXp1VfrjhyyDxbFidMpoSvD8clc.jpg",
+    posterPath: "/pBwYsQaSTgnPphIy02DJjCF2cqs.jpg",
     datasetSource: "tmdb",
   },
 ];
+
 
 /* ── Location Cards (Landing Page) ── */
 

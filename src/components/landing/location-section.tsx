@@ -1,55 +1,60 @@
 "use client";
- 
+
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LOCATION_CARDS, type LocationCard as LocationCardType } from "@/services/curated-collections";
+import Image from "next/image";
+import { CURATED_LOCATIONS, type CuratedLocation } from "@/services/curated-collections";
 import { cn } from "@/lib/utils";
- 
+import { MapPin, Film } from "lucide-react";
+
 export function LocationSection() {
-  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [locations, setLocations] = useState<(CuratedLocation & { posterUrl?: string })[]>([]);
   const [loading, setLoading] = useState(true);
- 
+
   useEffect(() => {
-    const fetchCounts = async () => {
+    const fetchLocationPosters = async () => {
+      setLoading(true);
       try {
-        const promises = LOCATION_CARDS.map(async (loc) => {
-          try {
-            const res = await fetch(`/api/movies?type=location-count&city=${encodeURIComponent(loc.city)}`);
-            if (res.ok) {
-              const data = await res.json();
-              return { city: loc.city, count: data.count };
+        const hydrated = await Promise.all(
+          CURATED_LOCATIONS.map(async (loc) => {
+            try {
+              const res = await fetch(`/api/movies?type=detail&id=${loc.tmdbMovieId}`);
+              if (res.ok) {
+                const details = await res.json();
+                return {
+                  ...loc,
+                  posterUrl: details.poster || `https://image.tmdb.org/t/p/w342${loc.posterPath}`,
+                };
+              }
+            } catch (err) {
+              console.error(`Failed to fetch details for movie ID ${loc.tmdbMovieId}`, err);
             }
-          } catch (e) {
-            console.error(`Error fetching count for ${loc.city}`, e);
-          }
-          return { city: loc.city, count: 0 };
-        });
- 
-        const results = await Promise.all(promises);
-        const countMap: Record<string, number> = {};
-        results.forEach((item) => {
-          countMap[item.city] = item.count;
-        });
-        setCounts(countMap);
+            return {
+              ...loc,
+              posterUrl: `https://image.tmdb.org/t/p/w342${loc.posterPath}`,
+            };
+          })
+        );
+        setLocations(hydrated);
       } catch (err) {
-        console.error("Failed to fetch location counts", err);
+        console.error("Failed to load locations", err);
       } finally {
         setLoading(false);
       }
     };
- 
-    fetchCounts();
+
+    fetchLocationPosters();
   }, []);
- 
+
   return (
     <section
-      className="relative section-padding overflow-hidden bg-[#0e0d0b]"
+      className="relative py-16 md:py-24 overflow-hidden bg-[#0e0d0b]"
       aria-label="Explore by location"
     >
-      <div className="container-frame relative">
+      <div className="container-frame relative max-w-5xl mx-auto px-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 border-b border-white/5 pb-8">
           <div>
             <span className="text-overline-style block mb-3 text-[rgba(232,226,217,0.4)]">
               Film Geography
@@ -58,102 +63,88 @@ export function LocationSection() {
               Cinema has no borders
             </h2>
           </div>
-          <p className="max-w-sm text-[rgba(232,226,217,0.4)] text-[0.875rem] leading-relaxed font-sans">
+          <p className="max-w-sm text-[rgba(232,226,217,0.4)] text-[0.8125rem] leading-relaxed font-sans uppercase tracking-wider">
             Trace the footsteps of your favorite films across continents and cultures.
           </p>
         </div>
- 
-        {/* Location Grid — Flat Dark Rectangular Tiles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {LOCATION_CARDS.map((location, index) => (
-            <LocationCard
-              key={location.id}
-              location={location}
-              index={index}
-              isTall={index === 1 || index === 4}
-              filmCount={counts[location.city]}
-              loading={loading}
-            />
-          ))}
+
+        {/* Location Grid — Flat Dark Rectangular Tiles with Posters */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {loading
+            ? Array.from({ length: 6 }).map((_, idx) => (
+                <div
+                  key={`skeleton-${idx}`}
+                  className="bg-[#161410] border border-white/5 aspect-[3/4] w-full shimmer"
+                />
+              ))
+            : locations.map((loc, index) => (
+                <motion.div
+                  key={loc.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.05,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="h-full"
+                >
+                  <Link href={`/movie/${loc.tmdbMovieId}`} className="block h-full group">
+                    <div className="flex flex-col bg-[#161410] border border-white/5 transition-all duration-300 hover:border-[#e8d5b0]/25 hover:bg-[#1e1c18] h-full">
+                      {/* Top Poster Area */}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black">
+                        {loc.posterUrl ? (
+                          <Image
+                            src={loc.posterUrl}
+                            alt={`${loc.movieTitle} poster`}
+                            fill
+                            className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-103 brightness-[0.75] group-hover:brightness-90"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            unoptimized={loc.posterUrl.startsWith("http")}
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center text-white/20">
+                            <Film className="size-8" />
+                          </div>
+                        )}
+                        {/* Coordinates Badge */}
+                        <div className="absolute top-4 right-4 px-2.5 py-1 bg-black/75 backdrop-blur-md border border-white/10 text-[0.625rem] font-mono text-[#e8d5b0] tracking-wider">
+                          {loc.coordinates[0].toFixed(4)}° {loc.coordinates[0] >= 0 ? "E" : "W"}, {loc.coordinates[1].toFixed(4)}° {loc.coordinates[1] >= 0 ? "N" : "S"}
+                        </div>
+                      </div>
+
+                      {/* Content Area */}
+                      <div className="p-6 flex flex-col flex-grow justify-between text-left">
+                        <div>
+                          <div className="flex items-center gap-1.5 text-[0.6875rem] text-[rgba(232,226,217,0.4)] font-sans font-light tracking-[0.15em] uppercase mb-2">
+                            <MapPin className="size-3 text-[#e8d5b0]/60" />
+                            <span>{loc.city}, {loc.country}</span>
+                          </div>
+
+                          <h3 className="font-display italic font-normal text-[#e8e2d9] text-[1.35rem] leading-snug mb-1">
+                            {loc.movieTitle}
+                          </h3>
+                          <span className="text-[0.75rem] font-sans font-light text-[rgba(232,226,217,0.4)] block mb-4">
+                            {loc.year} • Directed by {loc.director}
+                          </span>
+
+                          <p className="text-[0.8125rem] font-sans font-light text-[rgba(232,226,217,0.5)] group-hover:text-[rgba(232,226,217,0.7)] transition-colors leading-relaxed line-clamp-3">
+                            {loc.scene}
+                          </p>
+                        </div>
+                        
+                        <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[0.6875rem] font-sans font-medium uppercase tracking-wider text-[#e8d5b0] group-hover:text-white transition-colors">
+                          <span>Explore Scene</span>
+                          <span>→</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
         </div>
       </div>
     </section>
-  );
-}
- 
-function LocationCard({
-  location,
-  index,
-  isTall,
-  filmCount,
-  loading,
-}: {
-  location: LocationCardType;
-  index: number;
-  isTall: boolean;
-  filmCount?: number;
-  loading: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.05,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={cn(isTall && "sm:row-span-2")}
-    >
-      <Link href="/atlas" className="block w-full h-full">
-        <div
-          className={cn(
-            "group relative overflow-hidden rounded-none cursor-pointer p-6 md:p-8 flex flex-col justify-between text-left",
-            "bg-[#161410] border border-white/5",
-            "hover:border-[#e8d5b0]/25 hover:bg-[#1e1c18]",
-            "transition-all duration-300",
-            isTall ? "h-[280px] sm:h-full min-h-[280px]" : "h-[280px]"
-          )}
-        >
-          {/* Top */}
-          <div className="flex items-start justify-between">
-            <div className="w-8 h-8 rounded-none border border-white/5 flex items-center justify-center text-[#e8d5b0] bg-black/20">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-            </div>
-            <span className="text-[0.6875rem] font-mono text-[#e8d5b0] tracking-wider font-light">
-              {location.coordinates}
-            </span>
-          </div>
- 
-          {/* Bottom */}
-          <div>
-            <span className="text-[0.6875rem] text-[rgba(232,226,217,0.4)] font-sans font-light tracking-[0.15em] uppercase block mb-1">
-              {location.country}
-            </span>
-            <h3 className="font-display italic font-normal text-[#e8e2d9] text-[1.5rem] md:text-[1.75rem] leading-none mb-3">
-              {location.city}
-            </h3>
-            <div className="flex items-center gap-2">
-              <span className="text-[0.75rem] font-sans font-light text-[rgba(232,226,217,0.4)]">
-                {loading ? "Counting..." : filmCount !== undefined ? `${filmCount.toLocaleString()} FILMS` : "Explore"}
-              </span>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
   );
 }
