@@ -346,6 +346,15 @@ export async function getMoviesByGenre(genreId: string, limit = 15): Promise<Mov
   return await Promise.all(results.map(hydrateMovie));
 }
 
+const MOOD_FILM_IDS: Record<string, number[]> = {
+  melancholic: [334543, 968051, 45784, 38],
+  euphoric: [313369, 508442, 116745, 194],
+  nostalgic: [11216, 387, 2062, 120467],
+  surreal: [1018, 4977, 10494, 129],
+  intimate: [76, 838240, 152601, 531428],
+  unsettled: [146233, 807, 1949, 181886],
+};
+
 /**
  * Discover movies matching a curated mood.
  * Uses TMDB Discover API with genre + keyword filtering.
@@ -357,6 +366,39 @@ export async function getMoodMovies(
   const mood = MOOD_DEFINITIONS.find((m) => m.id === moodId);
   if (!mood) {
     throw new Error(`Unknown mood: ${moodId}`);
+  }
+
+  const ids = MOOD_FILM_IDS[moodId];
+  if (ids) {
+    const movies = await Promise.all(
+      ids.slice(0, limit).map(async (id) => {
+        try {
+          const detail = await getMovieDetails(id.toString());
+          return {
+            id: detail.id,
+            title: detail.title,
+            year: detail.year,
+            rating: detail.rating,
+            genre: detail.genre,
+            director: detail.director,
+            tagline: detail.tagline,
+            poster: detail.poster,
+            duration: detail.duration,
+          };
+        } catch (e) {
+          console.error(`Error fetching movie details for mood film ${id}:`, e);
+          return null;
+        }
+      })
+    );
+
+    const validMovies = movies.filter((m) => m !== null) as Movie[];
+
+    return {
+      mood,
+      movies: validMovies,
+      totalResults: validMovies.length,
+    };
   }
 
   const params: Record<string, string> = {
