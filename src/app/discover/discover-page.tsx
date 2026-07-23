@@ -226,7 +226,7 @@ export function DiscoverPage() {
               </div>
  
               {/* 6 Mood Cards As Dark Rectangular Tiles */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
                 {MOOD_DEFINITIONS.map((mood) => {
                   const count = moodCounts[mood.id] || 350;
                   return (

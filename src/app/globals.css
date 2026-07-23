@@ -393,32 +393,32 @@ button {
 /* Layout */
 @utility container-frame {
   width: 100%;
-  max-width: var(--container-7xl);
+  max-width: 90rem;
   margin-inline: auto;
-  padding-inline: var(--spacing-6);
+  padding-inline: 1rem;
 
   @media (min-width: 48rem) {
-    padding-inline: var(--spacing-8);
+    padding-inline: 2rem;
   }
 
   @media (min-width: 64rem) {
-    padding-inline: var(--spacing-12);
+    padding-inline: 3rem;
   }
 
   @media (min-width: 80rem) {
-    padding-inline: var(--spacing-16);
+    padding-inline: 4rem;
   }
 }
 
 @utility section-padding {
-  padding-block: var(--spacing-16);
+  padding-block: 5rem;
 
   @media (min-width: 48rem) {
-    padding-block: var(--spacing-24);
+    padding-block: 7.5rem;
   }
 
   @media (min-width: 64rem) {
-    padding-block: var(--spacing-32);
+    padding-block: 10rem;
   }
 }
 

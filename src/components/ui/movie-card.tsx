@@ -2,6 +2,7 @@
  
 import Image from "next/image";
 import { Star, Clock, Film } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
  
 export interface Movie {
@@ -29,10 +30,20 @@ export function MovieCard({ movie, isLoading, className, onClick }: MovieCardPro
   }
  
   return (
-    <article
+    <motion.article
       onClick={onClick}
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+      whileHover={{
+        scale: 1.04,
+        rotate: 0.5,
+        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.8)",
+        transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }
+      }}
       className={cn(
-        "group relative flex-shrink-0 w-full cursor-pointer bg-[#161410] border border-white/5",
+        "group relative flex-shrink-0 w-full cursor-pointer bg-[#161410] border border-white/5 flex flex-col h-full",
         "hover:border-[#e8d5b0]/25 transition-all duration-300",
         className
       )}
@@ -48,7 +59,7 @@ export function MovieCard({ movie, isLoading, className, onClick }: MovieCardPro
               className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-101"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
-
+ 
             {/* Hover Glassmorphism Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-5 backdrop-blur-[1px]">
               {movie.tagline && (
@@ -75,7 +86,7 @@ export function MovieCard({ movie, isLoading, className, onClick }: MovieCardPro
             </span>
           </div>
         )}
-
+ 
         {/* Floating Rating Badge */}
         {movie.poster && (
           <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-none bg-black/60 border border-white/10 text-[0.75rem]">
@@ -86,9 +97,9 @@ export function MovieCard({ movie, isLoading, className, onClick }: MovieCardPro
           </div>
         )}
       </div>
- 
+  
       {/* Info */}
-      <div className="p-4 bg-[#161410] select-none">
+      <div className="p-4 bg-[#161410] select-none flex-grow flex flex-col justify-between">
         <h3 className="text-[1rem] font-display italic font-normal text-[#e8e2d9] tracking-tight truncate group-hover:text-[#e8d5b0] transition-colors duration-300">
           {movie.title}
         </h3>
@@ -99,7 +110,7 @@ export function MovieCard({ movie, isLoading, className, onClick }: MovieCardPro
           </span>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
  
@@ -107,14 +118,14 @@ export function MovieCardSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "w-full bg-[#161410] border border-white/5",
+        "w-full bg-[#161410] border border-white/5 flex flex-col h-full",
         className
       )}
     >
       <div className="relative w-full aspect-[2/3] bg-black shimmer overflow-hidden" />
-      <div className="p-4 flex flex-col gap-2">
+      <div className="p-4 flex flex-col gap-2 flex-grow justify-between">
         <div className="h-4 bg-[#1e1c18] rounded-none w-3/4 shimmer" />
-        <div className="flex justify-between items-center mt-2">
+        <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
           <div className="h-3 bg-[#1e1c18] rounded-none w-1/4 shimmer" />
           <div className="h-3 bg-[#1e1c18] rounded-none w-1/3 shimmer" />
         </div>

@@ -49,24 +49,28 @@ export function LocationSection() {
 
   return (
     <section
-      className="relative py-16 md:py-24 overflow-hidden bg-[#0e0d0b]"
+      className="relative section-padding overflow-hidden bg-[#0e0d0b]"
       aria-label="Explore by location"
     >
-      <div className="container-frame relative max-w-5xl mx-auto px-6">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 border-b border-white/5 pb-8">
-          <div>
-            <span className="text-overline-style block mb-3 text-[rgba(232,226,217,0.4)]">
-              Film Geography
-            </span>
-            <h2 className="font-display italic font-normal text-[2.25rem] sm:text-[3rem] text-[#e8e2d9] tracking-tight leading-tight">
-              Cinema has no borders
-            </h2>
-          </div>
-          <p className="max-w-sm text-[rgba(232,226,217,0.4)] text-[0.8125rem] leading-relaxed font-sans uppercase tracking-wider">
+      <div className="container-frame relative">
+        {/* Header — slide from left */}
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
+          className="mb-12 border-b border-white/5 pb-8"
+        >
+          <span className="text-overline-style block mb-3 text-[rgba(232,226,217,0.4)]">
+            Film Geography
+          </span>
+          <h2 className="font-display italic font-normal text-[2.25rem] sm:text-[3rem] text-[#e8e2d9] tracking-tight leading-tight mb-4">
+            Cinema has no borders
+          </h2>
+          <p className="max-w-xl text-[rgba(232,226,217,0.4)] text-[0.8125rem] leading-relaxed font-sans uppercase tracking-wider">
             Trace the footsteps of your favorite films across continents and cultures.
           </p>
-        </div>
+        </motion.div>
 
         {/* Location Grid — Flat Dark Rectangular Tiles with Posters */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -86,7 +90,7 @@ export function LocationSection() {
                   transition={{
                     duration: 0.5,
                     delay: index * 0.05,
-                    ease: [0.16, 1, 0.3, 1],
+                    ease: [0.16, 1, 0.3, 1] as const,
                   }}
                   className="h-full"
                 >

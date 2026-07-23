@@ -36,8 +36,14 @@ export function DirectorsSection() {
       aria-label="Featured directors"
     >
       <div className="container-frame">
-        {/* Header */}
-        <div className="text-center mb-16 max-w-2xl mx-auto">
+        {/* Header — fade + slide from left */}
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
+          className="text-center mb-16 max-w-2xl mx-auto"
+        >
           <span className="text-overline-style block mb-3 text-[rgba(232,226,217,0.4)]">
             Visionaries
           </span>
@@ -47,10 +53,10 @@ export function DirectorsSection() {
           <p className="mt-4 max-w-md mx-auto text-[rgba(232,226,217,0.4)] text-[0.875rem] leading-relaxed font-sans">
             Explore the filmographies of directors who shape how we see the world.
           </p>
-        </div>
+        </motion.div>
  
         {/* Director Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {loading ? (
             Array.from({ length: 4 }).map((_, idx) => (
               <DirectorSkeleton key={idx} />
@@ -133,7 +139,7 @@ function DirectorCard({
         transition={{
           duration: 0.5,
           delay: index * 0.05,
-          ease: [0.16, 1, 0.3, 1],
+          ease: [0.16, 1, 0.3, 1] as const,
         }}
         className={cn(
           "group relative overflow-hidden rounded-none cursor-pointer h-full",

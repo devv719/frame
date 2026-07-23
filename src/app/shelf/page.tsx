@@ -151,7 +151,7 @@ export default function ShelfPage() {
 
         {/* Loading */}
         {loading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div key={idx} className="aspect-[2/3] bg-[#151412] border border-[#292524] animate-pulse" />
             ))}

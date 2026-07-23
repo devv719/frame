@@ -26,19 +26,21 @@ export function MovieGrid({
   children,
 }: MovieGridProps) {
   
+  const gridClass = cardType === "compact"
+    ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+
   if (isLoading) {
     return (
       <div
         className={cn(
-          "grid gap-6 md:gap-8",
-          cardType === "compact"
-            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
+          "grid gap-5 md:gap-6",
+          gridClass,
           className
         )}
       >
         {Array.from({ length: skeletonCount }).map((_, index) => (
-          <div key={`skeleton-${index}`}>
+          <div key={`skeleton-${index}`} className="flex flex-col h-full">
             {cardType === "compact" ? (
               <CompactMovieCardSkeleton />
             ) : (
@@ -55,10 +57,8 @@ export function MovieGrid({
     return (
       <div
         className={cn(
-          "grid gap-6 md:gap-8",
-          cardType === "compact"
-            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
+          "grid gap-5 md:gap-6",
+          gridClass,
           className
         )}
       >
@@ -82,15 +82,13 @@ export function MovieGrid({
       viewport={{ once: true, margin: "-40px" }}
       variants={staggerContainer}
       className={cn(
-        "grid gap-6 md:gap-8",
-        cardType === "compact"
-          ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
+        "grid gap-5 md:gap-6",
+        gridClass,
         className
       )}
     >
       {movies.map((movie, index) => (
-        <motion.div key={movie.id} variants={staggerItem}>
+        <motion.div key={movie.id} variants={staggerItem} className="flex flex-col h-full">
           {cardType === "compact" ? (
             <CompactMovieCard
               movie={movie}

@@ -89,7 +89,13 @@ export function TrendingSection() {
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-[#ebdcb9]/[0.015] blur-[150px] pointer-events-none -z-10 animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
 
       {/* Section Header */}
-      <div className="container-frame mb-12 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, x: -24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
+        className="container-frame mb-12 relative z-10"
+      >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div>
             <span className="text-overline-style block mb-3 text-[rgba(232,226,217,0.4)]">
@@ -105,7 +111,7 @@ export function TrendingSection() {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Marquee Rows Container */}
       <div className="relative w-full overflow-hidden py-4">
