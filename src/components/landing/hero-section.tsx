@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { LogModal, type Movie } from "@/components/ui";
  
 export function HeroSection() {
@@ -31,11 +32,16 @@ export function HeroSection() {
  
   return (
     <section
-      className="relative min-h-[90dvh] flex flex-col items-center justify-center overflow-hidden bg-[#0e0d0b] text-[#e8e2d9] py-16 md:py-24"
+      className="relative min-h-[85vh] flex flex-col items-center justify-center bg-[#0e0d0b] text-[#e8e2d9] py-20 md:py-32"
       aria-label="Hero"
     >
       {/* Main Content Container */}
-      <div className="relative z-10 container-frame flex flex-col items-center text-center px-4 max-w-4xl">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+        className="relative z-10 container-frame flex flex-col items-center text-center"
+      >
         
         {/* Understated Literary Headline */}
         <h1 className="leading-[1.15] font-display italic font-normal text-[2.25rem] sm:text-[3rem] md:text-[4rem] text-[#e8e2d9] tracking-tight max-w-3xl">
@@ -48,8 +54,8 @@ export function HeroSection() {
         </p>
  
         {/* Interactive shelf of upright TMDB movie posters */}
-        <div className="w-full mt-12 mb-10 select-none">
-          <div className="flex gap-4 items-center justify-center flex-nowrap overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4">
+        <div className="w-full mt-12 mb-10 select-none overflow-hidden">
+          <div className="flex gap-4 items-center justify-start md:justify-center flex-nowrap overflow-x-auto pb-4 scrollbar-hide">
             {loading ? (
               Array.from({ length: 7 }).map((_, idx) => (
                 <div
@@ -59,18 +65,33 @@ export function HeroSection() {
               ))
             ) : posters.length > 0 ? (
               posters.map((movie) => (
-                <Link key={movie.id} href={`/movie/${movie.id}`} className="flex-shrink-0 group">
-                  <div className="relative w-[110px] sm:w-[130px] md:w-[150px] aspect-[2/3] rounded-none bg-[#161410] border border-white/5 overflow-hidden transition-all duration-300 group-hover:border-[#e8d5b0]/40">
-                    <Image
-                      src={movie.poster}
-                      alt={movie.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 110px, 150px"
-                      unoptimized={movie.poster.startsWith("http")}
-                    />
-                  </div>
-                </Link>
+                <motion.div
+                  key={movie.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+                  whileHover={{
+                    scale: 1.04,
+                    rotate: 0.5,
+                    boxShadow: "0 20px 40px rgba(0,0,0,0.65)",
+                    transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }
+                  }}
+                  className="flex-shrink-0"
+                >
+                  <Link href={`/movie/${movie.id}`} className="block group">
+                    <div className="relative w-[110px] sm:w-[130px] md:w-[150px] aspect-[2/3] rounded-none bg-[#161410] border border-white/5 overflow-hidden transition-all duration-300 group-hover:border-[#e8d5b0]/40">
+                      <Image
+                        src={movie.poster}
+                        alt={movie.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 110px, 150px"
+                        unoptimized={movie.poster.startsWith("http")}
+                      />
+                    </div>
+                  </Link>
+                </motion.div>
               ))
             ) : (
               <div className="h-[200px] flex items-center justify-center text-text-muted">
@@ -108,7 +129,7 @@ export function HeroSection() {
             Log a Watch
           </button>
         </div>
-      </div>
+      </motion.div>
  
       <LogModal isOpen={isLogOpen} onClose={() => setIsLogOpen(false)} />
     </section>

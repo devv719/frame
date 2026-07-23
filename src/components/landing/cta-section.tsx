@@ -26,7 +26,7 @@ export function CtaSection() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
             className="relative text-center max-w-2xl mx-auto flex flex-col items-center"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-white/5 bg-black/15 mb-8">
